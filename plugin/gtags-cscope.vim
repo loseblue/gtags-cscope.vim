@@ -130,6 +130,9 @@ endif
 if !exists("GtagsCscope_Keep_Alive")
     let GtagsCscope_Keep_Alive = 0
 endif
+if !exists("GtagsCscope_Use_Mouse ")
+    let GtagsCscope_Use_Mouse = 0
+endif
 
 "
 " Display error message.
@@ -247,10 +250,12 @@ function! s:GtagsCscope()
 	:nmap <C-n> :cn<CR>
 	:nmap <C-p> :cp<CR>
 	" Context search. See the --from-here option of global(1).
-	:nmap <C-\><C-\><C-]> :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
-	:nmap <2-LeftMouse>   :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
-	:nmap g<LeftMouse>    :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
-	:nmap <C-LeftMouse>   :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
+    :nmap <C-\><C-\><C-]> :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
+    if g:GtagsCscope_Use_Mouse == 1
+        :nmap <2-LeftMouse>   :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
+        :nmap g<LeftMouse>    :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
+        :nmap <C-LeftMouse>   :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
+    endif
 	" The following mappings are unnecessary, because you can use the default mapping.
 	":nmap g<RightMouse>   <C-t>
 	":nmap <C-RightMouse>  <C-t>
@@ -258,14 +263,14 @@ function! s:GtagsCscope()
 	:nmap <C-\><SPACE> :cs find<SPACE>
 	:nmap <C-@><SPACE> :scs find<SPACE>
 	:nmap <C-@><C-@><SPACE> :vert scs find<SPACE>
-	:nmap <F2> :copen<CR>
-	:nmap <F3> :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
-	:nmap <F4> :cclose<CR>
+	" :nmap <F2> :copen<CR>
+	" :nmap <F3> :cs find d <C-R>=expand("<cword>")<CR>:<C-R>=line('.')<CR>:%<CR>
+	" :nmap <F4> :cclose<CR>
     endif
 endfunction
-
 if g:GtagsCscope_Auto_Load == 1
     call s:GtagsCscope()
 endif
 command! -nargs=0 GtagsCscope call s:GtagsCscope()
 let loaded_gtags_cscope = 1
+
